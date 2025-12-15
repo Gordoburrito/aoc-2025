@@ -1,29 +1,28 @@
 # frozen_string_literal: true
-require 'set'
 
 def get_ranges
-  pp Time.now
-  fake_ranges = File.read('input.txt').split("=")[0].split("\n").map{|fake_range| fake_range.split("-")}
-  pp Time.now
-  # TODO: Too big!
-  real_ranges = fake_ranges.map{ |fake_range| (fake_range[0].to_i..fake_range[1].to_i).to_a } 
-  pp Time.now
-  x = real_ranges.flatten.uniq.to_set
-  pp Time.now
-  return x
+  fake_ranges = File.read('input.txt').split('=')[0].split("\n").map { |fake_range| fake_range.split('-') }
+  fake_ranges.map { |fake_range| (fake_range[0].to_i..fake_range[1].to_i) }
 end
-
 
 def get_ingredient_ids
-  pp Time.now
-  File.read('input.txt').split("=")[1].split("\n").map(&:to_i).to_set
-  pp Time.now
+  File.read('input.txt').split('=')[1].split("\n").map(&:to_i)
 end
 
-
-pp Time.now
 def main
-  y = (get_ingredient_ids & get_ranges).size
-  return y
+  ranges = get_ranges
+  ingredient_ids = get_ingredient_ids
+  fresh_ingredient_ids = []
+
+  ingredient_ids.each do |ingredient_id|
+    ranges.each do |range|
+      if range.include?(ingredient_id) && !fresh_ingredient_ids.include?(ingredient_id)
+        fresh_ingredient_ids << ingredient_id
+      end
+    end
+  end
+
+  fresh_ingredient_ids.size
 end
+
 pp main
