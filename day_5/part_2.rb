@@ -3,7 +3,7 @@
 require 'Set'
 
 def get_ranges
-  File.read('input_example.txt').split('=')[0].split("\n").map { |fake_range| fake_range.split('-').map(&:to_i) }
+  File.read('input.txt').split('=')[0].split("\n").map { |fake_range| fake_range.split('-').map(&:to_i).sort }
 end
 
 def overlapping?(range, combined_range)
@@ -14,31 +14,35 @@ def overlapping?(range, combined_range)
   false
 end
 
-def expand_range(range, combined_range)
-  arr = range + combined_range
-  arr.minmax
+def expand_range(_range, combined_ranges, overlapping_indexes)
+  arr = []
+  overlapping_indexes.each do |i|
+    arr << combined_ranges[i]
+  end
+  arr.flatten.minmax
 end
 
 def main
   ranges = get_ranges
+
+  pp "RANGER DANGER: #{ranges}"
   combined_ranges = [ranges[0]]
   tot = 0
 
   ranges.each do |range|
-    pp range
+    overlapping_indexes = []
     combined_ranges.each_with_index do |combined_range, i|
-      pp combined_range
-      pp overlapping?(range, combined_range)
-      if overlapping?(range, combined_range)
-        combined_ranges[i] = expand_range(range, combined_range)
-      else
-        combined_ranges << range
-      end
-      pp '~' * 10
+      overlapping_indexes << i if overlapping?(range, combined_range)
+    end
+    if overlapping_indexes.empty?
+      combined_ranges << range
+    else
+      overlapping_combined_range = expand_range(range, combined_ranges, overlapping_indexes)
+      combined_ranges = combined_ranges.reject.with_index { |_e, i| overlapping_indexes.include? i }
+      combined_ranges << overlapping_combined_range
+      pp "COMBINED COMBINE: #{combined_ranges}"
     end
   end
-
-  pp combined_ranges
 
   combined_ranges.each do |range|
     tot += (range.last - range.first + 1)
