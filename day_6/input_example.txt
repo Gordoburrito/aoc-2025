@@ -2,3 +2,22 @@
  45 64  387 23 
   6 98  215 314
 *   +   *   +  
+
+each row give me the thing at the index 
+concat the thing in the next one 
+
+# iterate through and next time you get a symbol and 
+get nothing and then you go to the next one
+
+or go until you get the next symbol
+
+get each index of the symbol
+at index 4 is where I break
+
+go through each row grab the value and stick them together as a number
+and do that for each column
+
+and then do the operation on those 
+
+
+
