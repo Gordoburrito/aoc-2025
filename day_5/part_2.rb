@@ -3,52 +3,53 @@
 require 'Set'
 
 def get_ranges
-  File.read('input.txt').split('=')[0].split("\n").map { |fake_range| fake_range.split('-').map(&:to_i).sort }
+  File.read('input.txt').split('=')[0].split("\n").map { |fake_range| fake_range.split('-').map(&:to_i).sort }.sort_by(&:first)
 end
 
-def overlapping?(range, combined_range)
-  return true if range.first >= combined_range.first && range.first <= combined_range.last
+def overlapping?(last_combined, range)
+  last_combined.last >= range.first
+  # overlapping
+  # lc -----
+  # r    ------
 
-  return true if range.last >= combined_range.first && range.last <= combined_range.last
+  # still works
+  # lc -------------------
+  # r1       -----
+  # r2            ------
 
-  false
+  # not overlapping
+  # lc---
+  # r     -----
 end
 
 def expand_range(_range, combined_ranges, overlapping_indexes)
-  arr = []
-  overlapping_indexes.each do |i|
-    arr << combined_ranges[i]
-  end
-  arr.flatten.minmax
 end
 
 def main
   ranges = get_ranges
-
-  pp "RANGER DANGER: #{ranges}"
+  # pseudo
+  # sort the ranges
+  # sort by first
   combined_ranges = [ranges[0]]
-  tot = 0
-
-  ranges.each do |range|
-    overlapping_indexes = []
-    combined_ranges.each_with_index do |combined_range, i|
-      overlapping_indexes << i if overlapping?(range, combined_range)
-    end
-    if overlapping_indexes.empty?
-      combined_ranges << range
+  ranges[1..].each do |range|
+    last_combined = combined_ranges.last
+    pp combined_ranges.last
+    if overlapping?(combined_ranges.last, range)
+      # last_combined = [last_combined.first, [last_combined.last, range.last].max]
+      combined_ranges[-1] = (last_combined + range).minmax
+      # combined_ranges = (combined_ranges.last + range).minmax
     else
-      overlapping_combined_range = expand_range(range, combined_ranges, overlapping_indexes)
-      combined_ranges = combined_ranges.reject.with_index { |_e, i| overlapping_indexes.include? i }
-      combined_ranges << overlapping_combined_range
-      pp "COMBINED COMBINE: #{combined_ranges}"
+      combined_ranges << range
     end
   end
+  pp combined_ranges
 
-  combined_ranges.each do |range|
-    tot += (range.last - range.first + 1)
+  total = 0
+  combined_ranges.each do |cr|
+    total += cr.last - cr.first + 1
   end
 
-  tot
+  return total
 end
 
 pp main
