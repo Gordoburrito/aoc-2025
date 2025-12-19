@@ -37,7 +37,6 @@ def main
     if overlapping?(combined_ranges.last, range)
       # last_combined = [last_combined.first, [last_combined.last, range.last].max]
 
-      # last_combined = (last_combined + range).minmax
       
       # yes! -- combined_ranges[-1] = last_combined
       # !NO -- combined_ranges.last = last_combined
