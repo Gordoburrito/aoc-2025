@@ -33,7 +33,7 @@ def main
     end
     if existing_cirs
       merged = Set.new
-      existing_cirs.each {|cir| merged.merge(cir)}
+      existing_cirs.each { |cir| merged.merge(cir) }
       merged.merge(pair)
       circuits -= existing_cirs
       circuits << merged
