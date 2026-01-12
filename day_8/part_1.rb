@@ -3,7 +3,7 @@
 require 'set'
 
 def get_points
-  File.read('input_example.txt').split("\n").map { |row| row.split(',').map(&:to_i) }
+  File.read('input.txt').split("\n").map { |row| row.split(',').map(&:to_i) }
 end
 
 def get_distance(pt_a, pt_b)
@@ -24,7 +24,7 @@ def main
   end
   sorted_pairs = pairs.sort_by do |pair|
     get_distance(points[pair[0]], points[pair[1]])
-  end[0..10]
+  end[0...1000]
 
   circuits = []
   sorted_pairs.each do |pair|
