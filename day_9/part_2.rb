@@ -7,50 +7,31 @@ end
 
 
 def build_perimeter
-  # but the tiles[1] doesn't have more than 2
   x_edges = {}
   y_edges = {}
-  # [min_y, max_y] = find_min_max_y
-
-  # find_neighbors trace the perimeter
-  # @tiles.each do |tile|
-  #   find_neighbors already found? neighbors each build perimeter
-  #   # 
-  # find_x_neighbors
-  # find_y_neighbors
+  # construct perimeter
   
-  # make x_edges from neighbors
-  # make y_edges
+  @tiles.map do |tile|
+    # find_x_neighbors
+    # make x_edges
+    x_edges[tile[1]] ||= []
+    x_edges[tile[1]] << tile[0]
+    # {1=>[7, 11], 7=>[11, 9], 5=>[9, 2], 3=>[2, 7]}
+    
+    # find_y_neighbors
+    # make y_edges
+    y_edges[tile[0]] ||= []
+    y_edges[tile[0]] << tile[1]
+    # {2=>[5, 3], 7=>[1, 3], 9=>[7, 5], 11=>[1, 7]}
+  end
 
+  # idea to
   # trace edges and make perimter like this 
   #   # {1=>[7,11], 2=>[7,11]...}
 
-
-
-  # construct perimeter
-  # then we do blah blah
-  
-  # {1=>[7, 11], 7=>[11, 9], 5=>[9, 2], 3=>[2, 7]}
-  @tiles.map do |tile|
-    x_edges[tile[1]] ||= []
-    # tiles with 
-    # the y column key what points are on the x
-    x_edges[tile[1]] << tile[0]
-  end
-
-  @tiles.map do |tile|
-    y_edges[tile[0]] ||= []
-    # tiles with 
-    # the y column key what points are on the x
-    y_edges[tile[0]] << tile[1]
-  end
+  # or calc within the edges
 
   [x_edges.sort.to_h, y_edges.sort.to_h]
-  # go through find neighbors for tile. 
-  # perimeter
-  #   @tiles.map do |tile|
-  #     tile[1]
-  #   end.tally
 end
 
 
