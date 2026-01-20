@@ -29,9 +29,7 @@ def build_perimeter
 
 
   def handle_y_edge(prev_x_corner, full_perimeter, x_edges, y_edges)
-    puts "prev_x_corner"
     puts prev_x_corner
-    puts "y_edges"
     puts y_edges
     current_y_edge = y_edges[prev_x_corner] # // 11=>[1,7]
     pp 'current_y_edge'
@@ -43,16 +41,20 @@ def build_perimeter
       full_perimeter[row] ||= []
       full_perimeter[row] << prev_x_corner
       full_perimeter[row].sort!
+      pp full_perimeter
     end
 
-    handle_x_edge(current_y_edge[1], full_perimeter)
+    handle_x_edge(current_y_edge[1], full_perimeter, x_edges, y_edges)
   end
 
   def handle_x_edge(prev_y_corner, full_perimeter, x_edges, y_edges)
     # fill outer perimeter from x_edge
-    prev_y_corner = prev_y_edge[1] # // 7 
+    
+    # TODO: pass in prev_y_corner = [7, 11]
     current_x_edge = x_edges[prev_y_corner] # // 7=> [9,11]
     full_perimeter[prev_y_corner] << current_x_edge[0] # 
+
+    # NOTE: WE NEED TO PASS THE ACTUAL CORNER SO WE KNOW THE DIRECTION WE ARE GOING IN!
 
     handle_y_edge(current_x_edge[1], full_perimeter)
   end
@@ -62,9 +64,10 @@ def build_perimeter
   puts x_edges
   puts y_edges
     # //trace the outside. 
-  starting_corner = x_edges[1]
+  starting_corner = x_edges[1][1]
 
   full_perimeter = {}
+  # {1=> [7,11], 2=> [7,11]...}
   handle_y_edge(starting_corner, full_perimeter, x_edges, y_edges)
     # or calc within the edges
   full_perimeter
