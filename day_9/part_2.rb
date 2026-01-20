@@ -16,22 +16,58 @@ def build_perimeter
     # make x_edges
     x_edges[tile[1]] ||= []
     x_edges[tile[1]] << tile[0]
+    x_edges[tile[1]].sort!
     # {1=>[7, 11], 7=>[11, 9], 5=>[9, 2], 3=>[2, 7]}
     
     # find_y_neighbors
     # make y_edges
     y_edges[tile[0]] ||= []
     y_edges[tile[0]] << tile[1]
+    y_edges[tile[0]].sort!
     # {2=>[5, 3], 7=>[1, 3], 9=>[7, 5], 11=>[1, 7]}
   end
 
-  # idea to
-  # trace edges and make perimter like this 
-  #   # {1=>[7,11], 2=>[7,11]...}
 
-  # or calc within the edges
+  def handle_y_edge(prev_x_corner, full_perimeter, x_edges, y_edges)
+    puts "prev_x_corner"
+    puts prev_x_corner
+    puts "y_edges"
+    puts y_edges
+    current_y_edge = y_edges[prev_x_corner] # // 11=>[1,7]
+    pp 'current_y_edge'
+    pp current_y_edge
+    y_range = (current_y_edge[0]..current_y_edge[1]).to_a
+    
+    # fill outer perimeter of rows from y_edges
+    y_range.each do |row|
+      full_perimeter[row] ||= []
+      full_perimeter[row] << prev_x_corner
+      full_perimeter[row].sort!
+    end
 
-  [x_edges.sort.to_h, y_edges.sort.to_h]
+    handle_x_edge(current_y_edge[1], full_perimeter)
+  end
+
+  def handle_x_edge(prev_y_corner, full_perimeter, x_edges, y_edges)
+    # fill outer perimeter from x_edge
+    prev_y_corner = prev_y_edge[1] # // 7 
+    current_x_edge = x_edges[prev_y_corner] # // 7=> [9,11]
+    full_perimeter[prev_y_corner] << current_x_edge[0] # 
+
+    handle_y_edge(current_x_edge[1], full_perimeter)
+  end
+
+  x_edges, y_edges = [x_edges.sort.to_h, y_edges.sort.to_h]
+
+  puts x_edges
+  puts y_edges
+    # //trace the outside. 
+  starting_corner = x_edges[1]
+
+  full_perimeter = {}
+  handle_y_edge(starting_corner, full_perimeter, x_edges, y_edges)
+    # or calc within the edges
+  full_perimeter
 end
 
 
