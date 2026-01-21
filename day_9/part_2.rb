@@ -63,6 +63,10 @@ def is_valid_group?(corners, vertical_edges)
 end
 
 def get_all_corners(opposite_corner_pair)
+  # TODO: get all vertical edge points instead.
+  # to handle the edge case where there is a gap 
+  # we need to get the vertical edges of the box and check
+
   new_point_1 = [opposite_corner_pair[0][0], opposite_corner_pair[1][1]]
   new_point_2 = [opposite_corner_pair[1][0], opposite_corner_pair[0][1]]
   opposite_corner_pair << new_point_1
