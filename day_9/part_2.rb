@@ -145,3 +145,18 @@ end
 pp main
 
 # too low 1289423295
+# "opposite_corner"
+# 122760
+# "valid_opposite_corners"
+# 1644
+# 1289423295
+
+# just four_corners
+# too high
+# "valid_ranges"
+# 96677
+# "opposite_corner"
+# 122760
+# "valid_opposite_corners"
+# 3146
+# 4589308260
