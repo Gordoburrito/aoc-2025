@@ -82,10 +82,28 @@ def get_vertical_sides(opposite_corner_pair)
   vertical_sides
 end
 
+def four_corners_are_valid(opposite_corner_pair, valid_ranges)
+  four_corners = opposite_corner_pair
+  side_a_start = opposite_corner_pair[0]
+  side_b_start = opposite_corner_pair[1]
+
+  side_a_end = [side_a_start[0], side_b_start[1]]
+  side_b_end = [side_b_start[0], side_a_start[1]]
+  four_corners << side_a_end
+  four_corners << side_b_end
+
+  is_valid_group?(four_corners, valid_ranges)
+end
+
+
 def get_valid_opposite_corners(opposite_corners, valid_ranges)
   opposite_corners.select do |opposite_corner_pair|
-    vertical_sides = get_vertical_sides(opposite_corner_pair)
-    is_valid_group?(vertical_sides, valid_ranges)
+    if !four_corners_are_valid(opposite_corner_pair, valid_ranges)
+      false
+    else
+      vertical_sides = get_vertical_sides(opposite_corner_pair)
+      is_valid_group?(vertical_sides, valid_ranges)
+    end
   end
 end
 
@@ -113,7 +131,7 @@ def main
   vertical_edges = get_vertical_edges
   valid_ranges = get_valid_ranges(vertical_edges)
   pp "valid_ranges"
-  pp valid_ranges
+  pp valid_ranges.size
   opposite_corners = get_opposite_corners
   pp "opposite_corner"
   pp opposite_corners.size
