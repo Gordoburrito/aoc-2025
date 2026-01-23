@@ -3,7 +3,7 @@
 require 'set'
 
 def get_tiles
-  File.read('input_example.txt').split("\n").map { |tile| tile.split(',').map(&:to_i) }
+  File.read('input_example_w_edge_case_vert_tooth.txt').split("\n").map { |tile| tile.split(',').map(&:to_i) }
 end
 
 def print_tiles
